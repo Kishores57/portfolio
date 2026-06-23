@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import GradualBlur from "./GradualBlur";
 import PillNav from "./PillNav";
+import LiquidEther from "./LiquidEther";
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 
@@ -282,6 +283,8 @@ const ANIMATIONS = `
   }
 `;
 
+const liquidColors = ['#5227FF', '#FF9FFC', '#B497CF'];
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function App() {
@@ -292,12 +295,6 @@ export default function App() {
   const [sent, setSent] = useState(false);
   const [transitioning, setTransitioning] = useState(false);
   const [activeNav, setActiveNav] = useState("#home");
-  const [focusActive, setFocusActive] = useState(false);
-
-  const navItems = useMemo(() => NAV.map(n => ({
-    ...n,
-    onClick: (e: any) => handleNavClick(e, n.href)
-  })), []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -380,25 +377,13 @@ export default function App() {
     setTimeout(() => setTransitioning(false), 1100);
   };
 
-  // Card hover — smoothly translate card to viewport centre
-  const handleCardEnter = (e: React.MouseEvent) => {
-    const el = e.currentTarget as HTMLElement;
-    const rect = el.getBoundingClientRect();
-    const dx = window.innerWidth  / 2 - rect.left - rect.width  / 2;
-    const dy = window.innerHeight / 2 - rect.top  - rect.height / 2;
-    el.style.transform = `translate(${dx}px, ${dy}px) scale(1.08)`;
-    el.classList.add('card-centered');
-    setFocusActive(true);
-  };
+  const navItems = useMemo(() => NAV.map(n => ({
+    ...n,
+    onClick: (e: any) => handleNavClick(e, n.href)
+  })), []);
 
-  const handleCardLeave = (e: React.MouseEvent) => {
-    const el = e.currentTarget as HTMLElement;
-    el.style.transform = '';
-    el.classList.remove('card-centered');
-    setFocusActive(false);
-  };
-
-  const BG = "#05050f";
+  
+  const BG = "transparent";
   const BLUE = "#0A84FF";
   const PURPLE = "#BF5AF2";
   const WHITE = "#F5F5F7";
@@ -418,15 +403,38 @@ export default function App() {
   };
 
   return (
-    <div
-      style={{ background: BG, minHeight: "100vh", fontFamily: "'Urbanist', sans-serif", color: WHITE, overflowX: "hidden" }}
-    >
-      <style>{ANIMATIONS}</style>
-      <GradualBlur preset="page-header" zIndex={-10} />
+    <>
+      {/* ── Background Liquid Fluid ── */}
+      <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -999, pointerEvents: 'none' }}>
+        <LiquidEther
+          colors={liquidColors}
+          mouseForce={20}
+          cursorSize={140}
+          isViscous
+          viscous={30}
+          iterationsViscous={32}
+          iterationsPoisson={32}
+          resolution={0.5}
+          isBounce={false}
+          autoDemo
+          autoSpeed={0.5}
+          autoIntensity={2.2}
+          takeoverDuration={0.25}
+          autoResumeDelay={3000}
+          autoRampDuration={0.6}
+        />
+        {/* Dark overlay to ensure text remains readable */}
+        <div style={{ position: 'absolute', inset: 0, background: 'rgba(5, 5, 15, 0.55)', zIndex: 1 }} />
+      </div>
+
+      <div
+        style={{ background: BG, minHeight: "100vh", fontFamily: "'Urbanist', sans-serif", color: WHITE, overflowX: "hidden" }}
+      >
+        <style>{ANIMATIONS}</style>
+        <GradualBlur preset="page-header" zIndex={-10} />
       <GradualBlur preset="page-footer" zIndex={-10} />
       
-      {/* Global card-focus blur overlay */}
-      <div className={`focus-overlay${focusActive ? " active" : ""}`} onClick={() => setFocusActive(false)} />
+
 
       {/* ── Navbar — PillNav ── */}
       <PillNav
@@ -475,27 +483,6 @@ export default function App() {
           }} />
         </div>
 
-        {/* Floating glass spheres */}
-        <div style={{
-          position: "absolute", top: "15%", right: "12%", zIndex: 1,
-          width: "120px", height: "120px", borderRadius: "50%",
-          ...glassAccent(BLUE),
-          animation: "float 7s ease-in-out infinite",
-          boxShadow: `0 0 40px rgba(${hexToRgb(BLUE)},0.3), inset 0 2px 0 rgba(255,255,255,0.15)`,
-        }} />
-        <div style={{
-          position: "absolute", bottom: "20%", left: "8%", zIndex: 1,
-          width: "80px", height: "80px", borderRadius: "50%",
-          ...glassAccent(PURPLE),
-          animation: "floatR 9s ease-in-out infinite",
-          boxShadow: `0 0 30px rgba(${hexToRgb(PURPLE)},0.3)`,
-        }} />
-        <div style={{
-          position: "absolute", top: "55%", right: "20%", zIndex: 1,
-          width: "50px", height: "50px", borderRadius: "50%",
-          ...glassAccent(GREEN),
-          animation: "floatL 6s ease-in-out infinite",
-        }} />
 
         {/* Hero Content */}
         <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "0 1.5rem", maxWidth: "900px", width: "100%" }}>
@@ -618,8 +605,6 @@ export default function App() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "2rem", alignItems: "start" }}>
           <div className="scatter-card"
-            onMouseEnter={handleCardEnter}
-            onMouseLeave={handleCardLeave}
             style={{
               gridColumn: "span 1",
               ...glassCard,
@@ -670,8 +655,6 @@ export default function App() {
               { title: "Future Vision", color: "#FF9F0A", text: "Building AI-first products at the intersection of machine learning and human experience. I see a future where intelligent software doesn't just assist humans — it amplifies what we're capable of." },
             ].map(({ title, color, text }) => (
               <div key={title} className="scatter-card"
-                onMouseEnter={handleCardEnter}
-                onMouseLeave={handleCardLeave}
                 style={{
                   ...glassCard,
                   padding: "1.75rem 2rem",
@@ -786,8 +769,6 @@ export default function App() {
           <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "center" }}>
             {filteredSkills.map(({ name, color }) => (
               <div key={name} className="scatter-card skill-orb"
-                onMouseEnter={handleCardEnter}
-                onMouseLeave={handleCardLeave}
                 style={{
                   padding: "0.875rem 1.5rem", borderRadius: "100px",
                   ...glassAccent(color),
@@ -816,8 +797,6 @@ export default function App() {
             {PROJECTS.map(({ title, desc, tech, type, accent }) => (
               <div key={title}
                 className="scatter-card"
-                onMouseEnter={handleCardEnter}
-                onMouseLeave={handleCardLeave}
                 style={{
                   ...glassCard,
                   overflow: "hidden",
@@ -910,8 +889,6 @@ export default function App() {
             {ACHIEVEMENTS.map(({ title, desc, Icon, color }) => (
               <div key={title}
                 className="scatter-card"
-                onMouseEnter={handleCardEnter}
-                onMouseLeave={handleCardLeave}
                 style={{
                   ...glassCard,
                   padding: "2rem",
@@ -1230,5 +1207,6 @@ export default function App() {
       </footer>
       </main>
     </div>
+    </>
   );
 }

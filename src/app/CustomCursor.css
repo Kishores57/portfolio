@@ -1,0 +1,50 @@
+.custom-cursor-frame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  box-sizing: border-box;
+  z-index: 99999;
+}
+
+.cursor-corner {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--border-color, #fff);
+  filter: drop-shadow(0px 0px 6px var(--glow-color, rgba(255, 255, 255, 0.6)));
+  border-radius: 1px;
+  transition: all 0.2s ease;
+}
+
+.custom-cursor-frame .top-left {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+
+.custom-cursor-frame .top-right {
+  top: 0;
+  right: 0;
+  border-left: none;
+  border-bottom: none;
+}
+
+.custom-cursor-frame .bottom-left {
+  bottom: 0;
+  left: 0;
+  border-right: none;
+  border-top: none;
+}
+
+.custom-cursor-frame .bottom-right {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
+}
+
+/* Optional: hide the default cursor entirely so only the custom cursor is visible */
+/* body { cursor: none; } */
+/* a, button { cursor: none !important; } */

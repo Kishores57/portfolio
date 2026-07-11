@@ -1,0 +1,225 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   App.css — Static stylesheet (extracted from inline <style> tag)
+   Moved here so the browser parses it once, not on every React render.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Page transition ─────────────────────────────────────────────────────── */
+@keyframes page-blur-in {
+  0%   { opacity: 1; }
+  30%  { opacity: 0.2; }
+  70%  { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+.page-transitioning {
+  animation: page-blur-in 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* ── iPhone-style scatter → gather entrance ────────────────────────────── */
+@keyframes scatter-gather {
+  0% {
+    transform: translate(var(--sx, -200px), var(--sy, -150px)) scale(0.25) rotate(var(--sr, -10deg));
+    opacity: 0;
+  }
+  40%  { opacity: 0.6; }
+  80%  { opacity: 1; }
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes section-title-in {
+  0%   { opacity: 0; transform: translateY(-30px) scale(0.92); }
+  100% { opacity: 1; transform: translateY(0)     scale(1);    }
+}
+
+.section-hidden { opacity: 0; }
+.section-hidden .scatter-card { opacity: 0; }
+.section-hidden .section-title { opacity: 0; }
+
+.section-visible .section-title {
+  animation: section-title-in 0.7s cubic-bezier(0.34,1.2,0.64,1) 0.05s both;
+}
+.section-visible .scatter-card {
+  animation: scatter-gather 1.1s cubic-bezier(0.34, 1.15, 0.64, 1) both;
+}
+
+/* ── Card focus: move to screen centre + blur backdrop ────────────────── */
+.focus-overlay {
+  position: fixed; inset: 0; z-index: 40;
+  backdrop-filter: blur(10px) brightness(0.45) saturate(80%);
+  -webkit-backdrop-filter: blur(10px) brightness(0.45) saturate(80%);
+  background: rgba(0,0,0,0.4);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.55s cubic-bezier(0.4,0,0.2,1);
+}
+.focus-overlay.active { opacity: 1; pointer-events: all; }
+
+.scatter-card {
+  position: relative; z-index: 1;
+  transition:
+    transform 0.9s cubic-bezier(0.34, 1.12, 0.64, 1),
+    box-shadow 0.7s ease,
+    opacity 0.6s ease;
+  will-change: transform, opacity;
+  contain: layout style;
+}
+.scatter-card.card-centered {
+  z-index: 50;
+  box-shadow: 0 50px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.14) !important;
+}
+
+/* ── Aurora / Background animations ──────────────────────────────────── */
+@keyframes aurora1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33% { transform: translate(60px,-40px) scale(1.15); }
+  66% { transform: translate(-30px,25px) scale(0.9); }
+}
+@keyframes aurora2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  40% { transform: translate(-50px,35px) scale(1.2); }
+  70% { transform: translate(25px,-20px) scale(0.95); }
+}
+@keyframes aurora3 {
+  0%,100% { transform: translate(0,0) scale(1); opacity:0.6; }
+  50% { transform: translate(40px,50px) scale(1.25); opacity:0.9; }
+}
+
+/* ── Float animations ────────────────────────────────────────────────── */
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+@keyframes floatR {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-14px) rotate(6deg); }
+}
+@keyframes floatL {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-22px) rotate(-4deg); }
+}
+
+/* ── Pulse ring — GPU-optimized with pseudo-element ──────────────────── */
+/* Using transform:scale + opacity on a pseudo-element instead of
+   animating box-shadow (which triggers paint on every frame) */
+.pulse-ring-container {
+  position: relative;
+}
+.pulse-ring-container::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(10,132,255,0.4);
+  opacity: 0;
+  transform: scale(1);
+  animation: pulse-ring-pseudo 3s ease-in-out infinite;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+@keyframes pulse-ring-pseudo {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  70%  { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* ── Shimmer ─────────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* ── Particle rise ───────────────────────────────────────────────────── */
+@keyframes particle-rise {
+  0% { transform: translateY(0) scale(0); opacity:0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.4; }
+  100% { transform: translateY(-80vh) scale(1.5); opacity:0; }
+}
+
+/* ── Spin / Glow ─────────────────────────────────────────────────────── */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes glow-pulse {
+  0%,100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ── Global scroll ───────────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(10,132,255,0.25); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(10,132,255,0.45); }
+
+/* ── Hover effects ───────────────────────────────────────────────────── */
+.glass-card-hover {
+  transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s ease;
+}
+.glass-card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 60px rgba(10,132,255,0.2) !important;
+}
+
+.skill-orb {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: default;
+}
+.skill-orb:hover {
+  transform: scale(1.12) translateY(-4px);
+}
+
+.nav-link { transition: color 0.2s, background 0.2s; }
+.nav-link:hover { color: #fff !important; background: rgba(255,255,255,0.08) !important; }
+.nav-link.active {
+  color: #fff !important;
+  background: rgba(10,132,255,0.25) !important;
+  box-shadow: inset 0 0 0 1px rgba(10,132,255,0.4);
+}
+
+.btn-glass { transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s; }
+.btn-glass:hover { transform: translateY(-2px); opacity: 0.92; }
+
+.achievement-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.achievement-card:hover { transform: scale(1.04); box-shadow: 0 20px 60px rgba(0,0,0,0.5) !important; }
+
+.cat-pill { transition: all 0.25s cubic-bezier(.4,0,.2,1); cursor: pointer; }
+
+/* ── Social icon hover state ─────────────────────────────────────────── */
+.social-icon-link {
+  transition: color 0.2s, transform 0.2s;
+}
+.social-icon-link:hover {
+  color: #0A84FF !important;
+}
+
+.footer-nav-link {
+  transition: color 0.2s;
+}
+.footer-nav-link:hover {
+  color: #F5F5F7 !important;
+}
+
+/* ── Mobile menu ─────────────────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .mobile-menu-btn { display: flex !important; }
+  .desktop-nav-links { display: none !important; }
+  .hire-me-pill { display: none !important; }
+}
+
+/* ── Section containment for paint optimization ──────────────────────── */
+.animate-section {
+  contain: layout style;
+}
+
+/* ── Accessibility: respect reduced motion ───────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html { scroll-behavior: auto; }
+}

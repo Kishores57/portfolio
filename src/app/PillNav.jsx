@@ -81,7 +81,14 @@ const PillNav = ({
 
     layout();
 
-    const onResize = () => layout();
+    let resizeRaf = null;
+    const onResize = () => {
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(() => {
+        resizeRaf = null;
+        layout();
+      });
+    };
     window.addEventListener('resize', onResize);
 
     if (document.fonts?.ready) {
@@ -116,7 +123,10 @@ const PillNav = ({
       }
     }
 
-    return () => window.removeEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    };
   }, [items, ease, initialLoadAnimation]);
 
   const handleEnter = i => {

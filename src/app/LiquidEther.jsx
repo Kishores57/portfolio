@@ -944,7 +944,7 @@ export default function LiquidEther({
         this.init();
         this._loop = this.loop.bind(this);
         this._resize = this.resize.bind(this);
-        window.addEventListener('resize', this._resize);
+        // Resize handled by ResizeObserver — no duplicate listener needed
         this._onVisibility = () => {
           const hidden = document.hidden;
           if (hidden) {
@@ -989,7 +989,6 @@ export default function LiquidEther({
       }
       dispose() {
         try {
-          window.removeEventListener('resize', this._resize);
           document.removeEventListener('visibilitychange', this._onVisibility);
           Mouse.dispose();
           if (Common.renderer) {
@@ -1094,25 +1093,8 @@ export default function LiquidEther({
       }
       webglRef.current = null;
     };
-  }, [
-    BFECC,
-    cursorSize,
-    dt,
-    isBounce,
-    isViscous,
-    iterationsPoisson,
-    iterationsViscous,
-    mouseForce,
-    resolution,
-    viscous,
-    colors,
-    autoDemo,
-    autoSpeed,
-    autoIntensity,
-    takeoverDuration,
-    autoResumeDelay,
-    autoRampDuration
-  ]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);  // Create WebGL context once — prop updates handled by the effect below
 
   useEffect(() => {
     const webgl = webglRef.current;

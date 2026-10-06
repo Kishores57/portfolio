@@ -15,7 +15,7 @@ const WhyHireSection = React.memo(function WhyHireSection() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.75rem" }}>
           {WHY.map(({ title, desc, Icon, color }) => (
-            <div key={title} className="glass-card-hover" style={{
+            <div key={title} className="neo-card" style={{
               ...glassCard,
               padding: "2rem",
             }}>
@@ -27,7 +27,7 @@ const WhyHireSection = React.memo(function WhyHireSection() {
                 <Icon size={24} color={color} />
               </div>
               <div style={{ fontWeight: 800, fontSize: "1.125rem", marginBottom: "0.625rem" }}>{title}</div>
-              <p style={{ color: "rgba(245,245,247,0.6)", fontSize: "0.9rem", lineHeight: 1.7, margin: 0 }}>{desc}</p>
+              <p style={{ color: "rgba(29,29,31,0.6)", fontSize: "0.9rem", lineHeight: 1.7, margin: 0 }}>{desc}</p>
             </div>
           ))}
         </div>

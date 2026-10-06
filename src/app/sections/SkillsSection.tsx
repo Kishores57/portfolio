@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { glass, glassAccent, sectionLabel, SKILLS, SKILL_CATS, BLUE, PURPLE, WHITE } from "./constants";
+import { glass, glassCard, sectionLabel, SKILLS, SKILL_CATS, BLUE, PURPLE, WHITE } from "./constants";
 import { hexToRgb } from "./constants";
 
 const SkillsSection = React.memo(function SkillsSection() {
@@ -29,8 +29,8 @@ const SkillsSection = React.memo(function SkillsSection() {
                 padding: "0.5rem 1.125rem", borderRadius: "100px",
                 fontSize: "0.8125rem", fontWeight: 600, border: "none", cursor: "pointer",
                 ...(activeCat === cat
-                  ? { background: BLUE, color: "#fff", boxShadow: `0 4px 16px rgba(${hexToRgb(BLUE)},0.4)` }
-                  : { ...glass, color: "rgba(245,245,247,0.6)" }),
+                  ? { background: BLUE, color: "#fff", boxShadow: "0 4px 12px rgba(17,17,17,0.3)" }
+                  : { ...glass, color: "rgba(29,29,31,0.6)" }),
               }}>{cat}</button>
           ))}
         </div>
@@ -38,13 +38,14 @@ const SkillsSection = React.memo(function SkillsSection() {
         {/* Skill orbs */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem", justifyContent: "center" }}>
           {filteredSkills.map(({ name, color }) => (
-            <div key={name} className="scatter-card skill-orb"
+            <div key={name} className="neo-card skill-orb"
               style={{
-                padding: "0.875rem 1.5rem", borderRadius: "100px",
-                ...glassAccent(color),
+                padding: "0.875rem 1.5rem",
+                ...glassCard, borderRadius: "30px",
+                boxShadow: "8px 8px 18px #d6d6d6, -8px -8px 18px #ffffff",
                 display: "flex", alignItems: "center", gap: "0.5rem",
               }}>
-              <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: color, boxShadow: `0 0 8px ${color}` }} />
+              <div style={{ width: "8px", height: "8px", borderRadius: "50%", background: color }} />
               <span style={{ fontWeight: 700, fontSize: "0.9375rem", color: WHITE }}>{name}</span>
               <span style={{ fontSize: "0.7rem", color, fontFamily: "'JetBrains Mono', monospace", fontWeight: 500 }}>{activeCat === "All" ? SKILLS.find(s => s.name === name)?.cat : ""}</span>
             </div>

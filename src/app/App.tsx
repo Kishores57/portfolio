@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import PillNav from "./PillNav";
-import LiquidEther from "./LiquidEther";
 import "./App.css";
 
 // ── Section Components (memoized, isolated state) ─────────────────────────────
@@ -10,11 +9,11 @@ import JourneySection from "./sections/JourneySection";
 import SkillsSection from "./sections/SkillsSection";
 import ProjectsSection from "./sections/ProjectsSection";
 import AchievementsSection from "./sections/AchievementsSection";
-import GitHubSection from "./sections/GitHubSection";
 import WhyHireSection from "./sections/WhyHireSection";
 import ContactSection from "./sections/ContactSection";
 import FooterSection from "./sections/FooterSection";
-import { NAV, SCATTER_OFFSETS, liquidColors, WHITE } from "./sections/constants";
+import { useCardReveal } from "./useCardReveal";
+import { NAV, WHITE } from "./sections/constants";
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -52,38 +51,8 @@ export default function App() {
     };
   }, []);
 
-  // IntersectionObserver — fire once per section (no re-animation on scroll back)
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const cards = entry.target.querySelectorAll('.scatter-card');
-            cards.forEach((card, i) => {
-              const s = SCATTER_OFFSETS[i % SCATTER_OFFSETS.length];
-              const el = card as HTMLElement;
-              el.style.setProperty('--sx', s.sx);
-              el.style.setProperty('--sy', s.sy);
-              el.style.setProperty('--sr', s.sr);
-              el.style.animationDelay = `${i * 0.12}s`;
-            });
-            entry.target.classList.remove('section-hidden');
-            entry.target.classList.add('section-visible');
-            // Once animated, stop observing (animate once)
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08 }
-    );
-
-    document.querySelectorAll('.animate-section').forEach((el) => {
-      el.classList.add('section-hidden');
-      observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  // Scroll-reveal for every .neo-card (single IntersectionObserver, staggered)
+  useCardReveal();
 
   // Stable nav click handler
   const handleNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -107,28 +76,8 @@ export default function App() {
 
   return (
     <>
-      {/* ── Background Liquid Fluid ── */}
-      <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -999, pointerEvents: 'none' }}>
-        <LiquidEther
-          colors={liquidColors}
-          mouseForce={20}
-          cursorSize={140}
-          isViscous
-          viscous={30}
-          iterationsViscous={32}
-          iterationsPoisson={32}
-          resolution={0.5}
-          isBounce={false}
-          autoDemo
-          autoSpeed={0.5}
-          autoIntensity={2.2}
-          takeoverDuration={0.25}
-          autoResumeDelay={3000}
-          autoRampDuration={0.6}
-        />
-        {/* Dark overlay to ensure text remains readable */}
-        <div style={{ position: 'absolute', inset: 0, background: 'rgba(5, 5, 15, 0.55)', zIndex: 1 }} />
-      </div>
+      {/* ── Clean light background ── */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: -999, pointerEvents: 'none', background: '#eceef1' }} />
 
       <div style={{ background: "transparent", minHeight: "100vh", fontFamily: "'Urbanist', sans-serif", color: WHITE, overflowX: "hidden" }}>
 
@@ -140,10 +89,10 @@ export default function App() {
           activeHref={activeNav}
           className="custom-nav"
           ease="power2.easeOut"
-          baseColor="rgba(10,10,25,0.55)"
-          pillColor="#0A84FF"
-          hoveredPillTextColor="#ffffff"
-          pillTextColor="rgba(245,245,247,0.65)"
+          baseColor="#1d1d1f"
+          pillColor="#ffffff"
+          hoveredPillTextColor="#111111"
+          pillTextColor="rgba(245,245,247,0.8)"
           onMobileMenuClick={toggleMobile}
           initialLoadAnimation={true}
         />
@@ -155,7 +104,6 @@ export default function App() {
           <SkillsSection />
           <ProjectsSection />
           <AchievementsSection />
-          <GitHubSection />
           <WhyHireSection />
           <ContactSection />
           <FooterSection />

@@ -22,7 +22,7 @@ const ContactSection = React.memo(function ContactSection() {
           <h2 style={{ fontSize: "clamp(2.5rem, 5vw, 4rem)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.1 }}>
             Let&apos;s Build<br />Something Great
           </h2>
-          <p style={{ color: "rgba(245,245,247,0.5)", fontSize: "1.0625rem", marginTop: "1rem" }}>
+          <p style={{ color: "rgba(29,29,31,0.5)", fontSize: "1.0625rem", marginTop: "1rem" }}>
             Open to collaborations, opportunities, and interesting conversations.
           </p>
         </div>
@@ -32,11 +32,11 @@ const ContactSection = React.memo(function ContactSection() {
           <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
             {[
               { Icon: Mail, label: "Email", val: "kishor@example.com", color: BLUE, action: "Send Email" },
-              { Icon: Linkedin, label: "LinkedIn", val: "linkedin.com/in/kishor", color: "#0077B5", action: "Connect" },
+              { Icon: Linkedin, label: "LinkedIn", val: "linkedin.com/in/kishor", color: "#222222", action: "Connect" },
               { Icon: Github, label: "GitHub", val: "github.com/kishor", color: PURPLE, action: "Follow" },
               { Icon: Calendar, label: "Schedule", val: "Book a 30-min call", color: GREEN, action: "Schedule" },
             ].map(({ Icon, label, val, color, action }) => (
-              <div key={label} className="glass-card-hover" style={{
+              <div key={label} className="neo-card" style={{
                 ...glassCard, padding: "1.375rem 1.75rem",
                 display: "flex", alignItems: "center", gap: "1rem",
               }}>
@@ -48,8 +48,8 @@ const ContactSection = React.memo(function ContactSection() {
                   <Icon size={20} color={color} />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 700, fontSize: "0.875rem", color: "rgba(245,245,247,0.9)" }}>{label}</div>
-                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.75rem", color: "rgba(245,245,247,0.45)" }}>{val}</div>
+                  <div style={{ fontWeight: 700, fontSize: "0.875rem", color: "rgba(29,29,31,0.9)" }}>{label}</div>
+                  <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.75rem", color: "rgba(29,29,31,0.45)" }}>{val}</div>
                 </div>
                 <button className="btn-glass" style={{
                   ...glassAccent(color), color,
@@ -61,7 +61,7 @@ const ContactSection = React.memo(function ContactSection() {
           </div>
 
           {/* Contact form */}
-          <form onSubmit={handleForm} style={{
+          <form onSubmit={handleForm} className="neo-card" style={{
             ...glassCard, padding: "2.5rem",
             display: "flex", flexDirection: "column", gap: "1.25rem",
           }}>
@@ -85,7 +85,7 @@ const ContactSection = React.memo(function ContactSection() {
                 onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))}
                 style={{
                   padding: "0.875rem 1.25rem", borderRadius: "0.875rem",
-                  background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+                  background: "#f3f4f7", border: "none", boxShadow: "inset 3px 3px 6px #e0e2e7, inset -3px -3px 6px #ffffff",
                   color: WHITE, fontSize: "0.9375rem", outline: "none", fontFamily: "'Urbanist', sans-serif",
                 }}
               />
@@ -95,7 +95,7 @@ const ContactSection = React.memo(function ContactSection() {
               onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
               style={{
                 padding: "0.875rem 1.25rem", borderRadius: "0.875rem",
-                background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+                background: "#f3f4f7", border: "none", boxShadow: "inset 3px 3px 6px #e0e2e7, inset -3px -3px 6px #ffffff",
                 color: WHITE, fontSize: "0.9375rem", outline: "none", resize: "none",
                 fontFamily: "'Urbanist', sans-serif",
               }}

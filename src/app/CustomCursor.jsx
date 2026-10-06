@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import './CustomCursor.css';
 
 const CustomCursor = ({
-  borderColor = '#0A84FF',
-  glowColor = 'rgba(10, 132, 255, 0.6)'
+  borderColor = '#111111',
+  glowColor = 'rgba(17,17,17, 0.6)'
 }) => {
   const [position, setPosition] = useState({ x: -100, y: -100 });
   const [isPointer, setIsPointer] = useState(false);

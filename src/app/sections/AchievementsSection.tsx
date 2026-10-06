@@ -4,7 +4,7 @@ import { hexToRgb, glassCard, glassAccent, sectionLabel, ACHIEVEMENTS } from "./
 const AchievementsSection = React.memo(function AchievementsSection() {
   return (
     <section id="achievements" className="animate-section" style={{ padding: "140px 2rem", position: "relative" }}>
-      <div style={{ position: "absolute", top: "20%", left: "0%", width: "50vw", height: "50vw", borderRadius: "50%", background: `radial-gradient(circle, rgba(${hexToRgb("#FFD60A")},0.05) 0%, transparent 70%)`, filter: "blur(100px)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: "20%", left: "0%", width: "50vw", height: "50vw", borderRadius: "50%", background: `radial-gradient(circle, rgba(${hexToRgb("#888888")},0.05) 0%, transparent 70%)`, filter: "blur(100px)", pointerEvents: "none" }} />
       <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
         <div className="section-title" style={{ textAlign: "center", marginBottom: "5rem" }}>
           <div style={sectionLabel}>Achievements</div>
@@ -16,23 +16,20 @@ const AchievementsSection = React.memo(function AchievementsSection() {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.75rem" }}>
           {ACHIEVEMENTS.map(({ title, desc, Icon, color }) => (
             <div key={title}
-              className="scatter-card"
+              className="neo-card"
               style={{
                 ...glassCard,
                 padding: "2rem",
-                borderTop: `2px solid rgba(${hexToRgb(color)},0.4)`,
-                boxShadow: `0 4px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(${hexToRgb(color)},0.1)`,
               }}>
               <div style={{
                 width: "52px", height: "52px", borderRadius: "14px", marginBottom: "1.25rem",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 ...glassAccent(color),
-                boxShadow: `0 0 20px rgba(${hexToRgb(color)},0.3)`,
               }}>
                 <Icon size={24} color={color} />
               </div>
               <div style={{ fontWeight: 800, fontSize: "1.0625rem", marginBottom: "0.5rem" }}>{title}</div>
-              <p style={{ color: "rgba(245,245,247,0.6)", fontSize: "0.875rem", lineHeight: 1.6, margin: 0 }}>{desc}</p>
+              <p style={{ color: "rgba(29,29,31,0.6)", fontSize: "0.875rem", lineHeight: 1.6, margin: 0 }}>{desc}</p>
             </div>
           ))}
         </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Github, ExternalLink, ImageIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { sectionLabel, glassCard, glassAccent, PROJECTS } from "./constants";
 
-const STEP_MS = 1000; // ~0.6s move + ~0.4s hold
+const STEP_MS = 3500; // ~0.6s move + ~2.9s comfortable reading time
 const VISIBLE_BEHIND = 3;
 
 const ProjectsSection = React.memo(function ProjectsSection() {

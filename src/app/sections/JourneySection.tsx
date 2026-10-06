@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { glassCard, sectionLabel, TIMELINE } from "./constants";
 
-const STEP_MS = 1000; // ~0.6s move + ~0.4s hold before the next card arrives
+const STEP_MS = 2800; // ~0.6s move + ~2.2s hold for comfortable viewing
 const VISIBLE_BEHIND = 3;
 
 const JourneySection = React.memo(function JourneySection() {
